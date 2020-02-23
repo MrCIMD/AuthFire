@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { UsuarioModel } from '../../models/usuario.model';
 import { NgForm } from '@angular/forms';
+import { UsuarioModel } from '../../models/usuario.model';
 
 @Component({
   selector: 'app-registro',
@@ -9,7 +9,7 @@ import { NgForm } from '@angular/forms';
 })
 export class RegistroComponent implements OnInit {
 
-  usuario: UsuarioModel;
+  public usuario: UsuarioModel;
 
   constructor() { }
 
