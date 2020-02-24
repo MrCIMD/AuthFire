@@ -49,4 +49,8 @@ export class AuthService {
     return this.token;
   }
 
+  public userAuth(): boolean {
+    return this.token.length > 2;
+  }
+
 }
