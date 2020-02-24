@@ -11,11 +11,13 @@ export class AuthService {
 
   private url = 'https://identitytoolkit.googleapis.com/v1/accounts:';
   private key = 'AIzaSyCzATluNUQrD-c8Hn8tVxZTtqH-Qh6JJ8I';
-  public token: string;
+  public token: string = '';
 
   constructor(private http: HttpClient) { }
 
-  logout() { }
+  logout() {
+    localStorage.removeItem('token');
+  }
 
   login(usuario: UsuarioModel) {
     return this.http.post(`${this.url}signInWithPassword?key=${this.key}`, {...usuario, returnSecureToken: true})
@@ -38,6 +40,10 @@ export class AuthService {
   private saveToken(idToken: string) {
     this.token = idToken;
     localStorage.setItem('token', idToken);
+
+    const hoy = new Date();
+    hoy.setSeconds(3600);
+    localStorage.setItem('expired', hoy.getTime().toString());
   }
 
   public readToken() {
@@ -50,7 +56,18 @@ export class AuthService {
   }
 
   public userAuth(): boolean {
-    return this.token.length > 2;
+    if (this.token.length < 2) {
+      return false;
+    }
+    const expired = Number(localStorage.getItem('expired'));
+    const expiredDate = new Date();
+    expiredDate.setSeconds(expired);
+
+    if (expiredDate > new Date()) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
 }
